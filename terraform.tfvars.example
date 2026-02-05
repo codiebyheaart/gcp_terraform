@@ -1,0 +1,52 @@
+# GCP Project Configuration
+# REQUIRED: Replace with your actual GCP project ID
+project_id = "my-gcp-project-123456"
+
+# Region and Zone Configuration
+region = "us-central1"
+zone   = "us-central1-a"
+
+# Network Configuration
+network_name = "terraform-network"
+subnet_name  = "terraform-subnet"
+subnet_cidr  = "10.0.1.0/24"
+
+# Instance Configuration
+instance_name    = "terraform-instance"
+machine_type     = "e2-medium"
+boot_disk_image  = "debian-cloud/debian-11"
+boot_disk_size   = 20
+boot_disk_type   = "pd-standard"
+
+# SSH Configuration
+ssh_user             = "terraform"
+ssh_public_key_path  = "~/.ssh/id_rsa.pub"
+allowed_ssh_sources  = ["0.0.0.0/0"]  # CHANGE THIS: Restrict to your IP for security
+
+# Service Account (leave empty to use default)
+service_account_email = ""
+
+# Scheduling Configuration
+automatic_restart   = true
+on_host_maintenance = "MIGRATE"
+preemptible         = false  # Set to true for cost savings (60-91% discount)
+
+# Tags and Labels
+additional_tags = ["web-server", "production"]
+
+labels = {
+  environment = "development"
+  managed_by  = "terraform"
+  project     = "multi-cloud-demo"
+  team        = "devops"
+}
+
+# Startup Script (Optional - customize as needed)
+startup_script = <<-EOF
+  #!/bin/bash
+  apt-get update
+  apt-get install -y nginx
+  systemctl start nginx
+  systemctl enable nginx
+  echo "<h1>GCP Instance deployed with Terraform</h1>" > /var/www/html/index.html
+EOF
